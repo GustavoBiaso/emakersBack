@@ -1,6 +1,6 @@
 package com.br.traineemakers.apiTask.data.entity;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.br.traineemakers.apiTask.data.dto.request.PessoaRequestDTO;
 
@@ -38,7 +38,7 @@ public class Pessoa {
             joinColumns = @JoinColumn(name = "idPessoa"),
             inverseJoinColumns = @JoinColumn(name = "idLivro")
     )
-    private Collection<Livro> livros;
+    private List<Livro> livros;
 
     @Builder
     public Pessoa(PessoaRequestDTO pessoaRequestDTO){

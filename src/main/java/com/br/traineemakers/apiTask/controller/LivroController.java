@@ -18,33 +18,37 @@ import com.br.traineemakers.apiTask.data.dto.request.LivroRequestDTO;
 import com.br.traineemakers.apiTask.data.dto.response.LivroResponseDTO;
 import com.br.traineemakers.apiTask.service.LivroService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/livro")
+@Tag(name = "Livro", description = "Endpoints relacionados à área de livro")
 public class LivroController {
      @Autowired
     private LivroService livroService;
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<List<LivroResponseDTO>> getAllLivro(){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.getAllLivro());
     }
 
-    @GetMapping(value = "/{idLivro}")
+    @GetMapping(value = "/{idLivro}", consumes = "application/index", produces = "application/json")
     public ResponseEntity<LivroResponseDTO> getLivroById(@PathVariable Long idLivro){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.getLivroById(idLivro));
     }
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<LivroResponseDTO> createLivro(@RequestBody LivroRequestDTO livroRequestDTO){
+    @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<LivroResponseDTO> createLivro(@Valid @RequestBody LivroRequestDTO livroRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.createLivro(livroRequestDTO));
     }
 
-    @PutMapping(value = "/update/{idLivro}")
-    public ResponseEntity<LivroResponseDTO> updateLivro(@PathVariable Long idLivro, @RequestBody LivroRequestDTO livroRequestDTO){
+    @PutMapping(value = "/update/{idLivro}", consumes = "application/index", produces = "application/json")
+    public ResponseEntity<LivroResponseDTO> updateLivro(@Valid @PathVariable Long idLivro, @RequestBody LivroRequestDTO livroRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.updateLivro(idLivro, livroRequestDTO));
     }
 
-    @DeleteMapping(value = "/delete/{idLivro}")
+    @DeleteMapping(value = "/delete/{idLivro}", consumes = "application/index", produces = "application/json")
     public ResponseEntity<String> deleteLivro(@PathVariable Long idLivro){
         return ResponseEntity.status(HttpStatus.OK).body(livroService.deleteLivro(idLivro));
     }

@@ -18,34 +18,48 @@ import com.br.traineemakers.apiTask.data.dto.request.PessoaRequestDTO;
 import com.br.traineemakers.apiTask.data.dto.response.PessoaResponseDTO;
 import com.br.traineemakers.apiTask.service.PessoaService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/pessoa")
+@Tag(name = "Pessoa", description = "Endpoints relacionados à área de pessoa")
 public class PessoaController {
     
     @Autowired
     private PessoaService pessoaService;
 
-    @GetMapping(value = "/all")
+    @GetMapping(value = "/all", produces = "application/json")
     public ResponseEntity<List<PessoaResponseDTO>> getAllPessoa(){
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.getAllPessoa());
     }
 
-    @GetMapping(value = "/{idPessoa}")
+    @GetMapping(value = "/{idPessoa}", consumes = "application/index", produces = "application/json")
     public ResponseEntity<PessoaResponseDTO> getPessoaById(@PathVariable Long idPessoa){
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.getPessoaById(idPessoa));
     }
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<PessoaResponseDTO> createPessoa(@RequestBody PessoaRequestDTO pessoaRequestDTO){
+    @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<PessoaResponseDTO> createPessoa(@Valid @RequestBody PessoaRequestDTO pessoaRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.createPessoa(pessoaRequestDTO));
     }
 
-    @PutMapping(value = "/update/{idPessoa}")
-    public ResponseEntity<PessoaResponseDTO> updatePessoa(@PathVariable Long idPessoa, @RequestBody PessoaRequestDTO pessoaRequestDTO){
+    @PutMapping(value = "/update/{idPessoa}", consumes = "application/index", produces = "application/json")
+    public ResponseEntity<PessoaResponseDTO> updatePessoa(@Valid @PathVariable Long idPessoa, @RequestBody PessoaRequestDTO pessoaRequestDTO){
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.updatePessoa(idPessoa, pessoaRequestDTO));
     }
 
-    @DeleteMapping(value = "/delete/{idPessoa}")
+    @PutMapping(value = "/updateAddLivro/{idPessoa}/{idLivro}", consumes = "application/index", produces = "application/json")
+    public ResponseEntity<PessoaResponseDTO> updateAddLivro(@PathVariable Long idPessoa, @PathVariable Long idLivro){
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.updateAddLivro(idPessoa, idLivro));
+    }
+
+    @PutMapping(value = "/updateDelLivro/{idPessoa}/{idLivro}", consumes = "application/index", produces = "application/json")
+    public ResponseEntity<PessoaResponseDTO> updateDelLivro(@PathVariable Long idPessoa, @PathVariable Long idLivro){
+        return ResponseEntity.status(HttpStatus.OK).body(pessoaService.updateDelLivro(idPessoa, idLivro));
+    }
+
+    @DeleteMapping(value = "/delete/{idPessoa}", consumes = "application/index", produces = "application/json")
     public ResponseEntity<String> deletePessoa(@PathVariable Long idPessoa){
         return ResponseEntity.status(HttpStatus.OK).body(pessoaService.deletePessoa(idPessoa));
     }

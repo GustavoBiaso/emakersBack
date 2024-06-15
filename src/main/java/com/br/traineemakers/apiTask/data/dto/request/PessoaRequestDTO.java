@@ -1,6 +1,6 @@
 package com.br.traineemakers.apiTask.data.dto.request;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.br.traineemakers.apiTask.data.entity.Livro;
 
@@ -20,7 +20,7 @@ public record PessoaRequestDTO(
     @NotBlank(message = "A senha da pessoa nao pode estar vazia")
     String senha,
 
-    Collection<Livro> livros)
+    List<Livro> livros)
     {
         
     }

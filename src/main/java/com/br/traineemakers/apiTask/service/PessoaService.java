@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.br.traineemakers.apiTask.data.dto.request.PessoaRequestDTO;
 import com.br.traineemakers.apiTask.data.dto.response.PessoaResponseDTO;
+import com.br.traineemakers.apiTask.data.entity.Livro;
 import com.br.traineemakers.apiTask.data.entity.Pessoa;
+import com.br.traineemakers.apiTask.repository.LivroRepository;
 import com.br.traineemakers.apiTask.repository.PessoaRepository;
 
 @Service
@@ -16,6 +18,8 @@ public class PessoaService {
     
     @Autowired
     private PessoaRepository pessoaRepository;
+    @Autowired
+    private LivroRepository livroRepository;
 
     public List<PessoaResponseDTO> getAllPessoa(){
         List<Pessoa> pessoas = pessoaRepository.findAll();
@@ -53,6 +57,29 @@ public class PessoaService {
 
         pessoaRepository.delete(pessoa);
         return "Pessoa deletada com sucesso";
+    }
+
+    public PessoaResponseDTO updateAddLivro(Long idPessoa, Long idLivro){
+        Pessoa pessoa = getPessoaId(idPessoa);
+        Livro livro = livroRepository.findById(idLivro).orElseThrow(() -> new RuntimeException("Erro ao achar livro por ID"));
+
+        pessoa.getLivros().add(livro);
+        pessoaRepository.save(pessoa);
+
+        return new PessoaResponseDTO(pessoa);
+    }
+
+    public PessoaResponseDTO updateDelLivro(Long idPessoa, Long idLivro){
+        Pessoa pessoa = getPessoaId(idPessoa);
+
+        for (Livro i : pessoa.getLivros()) {
+            if (i.getIdLivro() == idLivro) {
+                pessoa.getLivros().remove(i);
+            }
+        }
+        pessoaRepository.save(pessoa);
+
+        return new PessoaResponseDTO(pessoa);
     }
 
     private Pessoa getPessoaId(Long idPessoa){
